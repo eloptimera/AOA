@@ -6,6 +6,7 @@ import bmwVit from "@/assets/foto/bmw-f31-vit-rekond.webp";
 import bmwGra from "@/assets/foto/bmw-f31-rekond.webp";
 import vw from "@/assets/foto/vw-transporter-rekond.webp";
 import audiA6 from "@/assets/foto/audi-a6-sald.webp";
+import sunseeker from "@/assets/foto/sunseeker-polering.webp";
 
 export type Foto = { src: string; w: number; h: number; etikett: string; alt: string };
 
@@ -40,8 +41,8 @@ export const DEPA = {
     src: porsche,
     w: 627,
     h: 617,
-    etikett: "Rekond · Porsche Macan",
-    alt: "Turkosblå Porsche Macan med skylten AOA REKOND, nyrekondad inne i verkstaden",
+    etikett: "Rekond · Porsche Macan GTS",
+    alt: "Turkosblå Porsche Macan GTS med skylten AOA REKOND, nyrekondad inne i verkstaden",
   },
   bmwVit: {
     src: bmwVit,
@@ -71,7 +72,22 @@ export const DEPA = {
     etikett: "Såld · Audi A6",
     alt: "Svart Audi A6 sedan med en SÅLD-skylt i vindrutan, i verkstaden",
   },
+  sunseeker: {
+    src: sunseeker,
+    w: 591,
+    h: 717,
+    etikett: "Polering · Sunseeker, Smögen",
+    alt: "Vit Sunseeker-motorbåt nypolerad vid bryggan framför röda sjöbodar på Smögen",
+  },
 } satisfies Record<string, Foto>;
+
+/** Senaste jobben från depån (från Instagram). Uppdatera med nya jobb. */
+export const SENASTE = [
+  { jobb: "Sänkning av originalluftfjädring med stag", fordon: "Porsche Macan GTS" },
+  { jobb: "Sänkning av originalluftfjädring med stag", fordon: "BMW X5" },
+  { jobb: "Rengöring av partikelfilter", fordon: "BMW 320d" },
+  { jobb: "Polering och vaxning, på plats hos kunden på Smögen", fordon: "Sunseeker 62" },
+] as const;
 
 /** Fakta om fordonsslaget A-traktor (gäller alla, inte bara AOA:s byggen). */
 export const FAKTA = [

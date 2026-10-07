@@ -100,7 +100,7 @@ function Start() {
             logoH={334}
             namn="AOA Depå"
             rubrik="Service, försäljning och rekond"
-            text="I depån tar vi hand om bilen när den behöver lagas, säljas eller fräschas upp."
+            text="I depån tar vi hand om bilen när den behöver lagas, sänkas, säljas eller fräschas upp. Och vi polerar båtar."
             punkter={["Service och reparation", "Försäljningsuppdrag", "Rekond"]}
             delay={100}
           />

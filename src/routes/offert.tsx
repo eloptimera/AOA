@@ -28,9 +28,10 @@ export const Route = createFileRoute("/offert")({
 const ARENDEN = [
   "Ombyggnad till A-traktor",
   "Service eller reparation",
+  "Sänkning av luftfjädring",
   "Rekond",
   "Försäljningsuppdrag",
-  "Båt",
+  "Polering av båt",
   "Annat",
 ] as const;
 

@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Anchor, Sparkles, Tag, Wrench, type LucideIcon } from "lucide-react";
+import { Anchor, ArrowDownToLine, Sparkles, Tag, Wrench, type LucideIcon } from "lucide-react";
 import { Bild, KnappPil, SlutCta } from "@/components/Block";
 import { Reveal } from "@/components/Reveal";
-import { DEPA } from "@/lib/innehall";
+import { DEPA, SENASTE } from "@/lib/innehall";
+import { FORETAG } from "@/lib/foretag";
 import logoDepa from "@/assets/foto/logo-depa.webp";
 
 export const Route = createFileRoute("/depa")({
@@ -12,12 +13,12 @@ export const Route = createFileRoute("/depa")({
       {
         name: "description",
         content:
-          "I AOA:s depå i Lidköping tar vi hand om service och reparationer, försäljningsuppdrag och rekond av bilar och båtar.",
+          "I AOA Depå i Lidköping tar vi hand om service och reparationer, sänkning av luftfjädring, försäljningsuppdrag och rekond av bilar, och polering av båtar.",
       },
       { property: "og:title", content: "AOA Depå | Service, försäljning och rekond" },
       {
         property: "og:description",
-        content: "Service, reparation, försäljning och rekond av bilar och båtar.",
+        content: "Service, reparation, sänkning, försäljning och rekond. Polering av båtar.",
       },
       { property: "og:url", content: "/depa" },
     ],
@@ -37,10 +38,18 @@ type Tjanst = {
 
 const SERVICE: Tjanst = {
   titel: "Service och reparation",
-  text: "Från vanlig service till större reparationer. Vi felsöker, lagar och ser till att fordonet går som det ska.",
+  text: "Från vanlig service till större reparationer, till exempel rengöring av partikelfilter. Vi felsöker, lagar och ser till att bilen går som den ska.",
   ikon: Wrench,
-  span: "lg:col-span-4",
+  span: "sm:col-span-2 lg:col-span-4",
   ton: "signal",
+};
+
+const SANKNING: Tjanst = {
+  titel: "Sänkning",
+  text: "Sänkning av originalluftfjädring med stag, till exempel på Porsche Macan och BMW X5.",
+  ikon: ArrowDownToLine,
+  span: "lg:col-span-2",
+  ton: "yta",
 };
 
 const REKOND: Tjanst = {
@@ -61,9 +70,9 @@ const FORSALJNING: Tjanst = {
 
 const BATAR: Tjanst = {
   titel: "Båtar",
-  text: "Depån är inte bara till för bilar. Vi tar även hand om service och reparationer av båtar.",
+  text: "Polering och vaxning av båtar. Vi kommer gärna ut till båten, senast till en Sunseeker 62 på Smögen.",
   ikon: Anchor,
-  span: "lg:col-span-6",
+  span: "sm:col-span-2 lg:col-span-2",
   ton: "lyft",
 };
 
@@ -84,8 +93,9 @@ function Depa() {
               Service, försäljning <span className="markera">och rekond</span>
             </h1>
             <p className="mt-8 max-w-xl text-lg leading-relaxed text-muted-foreground">
-              Bredvid ombyggnaderna driver vi en depå. Hit kommer du när bilen behöver lagas, säljas
-              eller fräschas upp. Inga fasta priser, du får en offert utifrån jobbet.
+              Bredvid ombyggnaderna driver vi en depå. Hit kommer du när bilen behöver lagas,
+              sänkas, säljas eller fräschas upp. Båten polerar vi gärna på plats. Inga fasta priser,
+              du får en offert utifrån jobbet.
             </p>
             <div className="mt-8">
               <KnappPil to="/offert">Begär offert</KnappPil>
@@ -109,18 +119,57 @@ function Depa() {
           <Reveal delay={80} className="lg:col-span-2 lg:row-span-2">
             <Bild b={DEPA.porsche} className="h-full min-h-80" />
           </Reveal>
-          <Tile t={REKOND} delay={0} />
-          <Reveal delay={80} className="lg:col-span-2">
+          <Tile t={SANKNING} delay={0} />
+          <Tile t={REKOND} delay={80} />
+          <Reveal delay={0} className="lg:col-span-2">
             <Bild b={DEPA.bmwVit} className="h-full min-h-64" />
           </Reveal>
-          <Reveal delay={0} className="lg:col-span-2">
+          <Reveal delay={80} className="lg:col-span-2">
             <Bild b={DEPA.audiA6} className="h-full min-h-64" />
           </Reveal>
-          <Tile t={FORSALJNING} delay={80} />
-          <Reveal delay={160} className="lg:col-span-2">
-            <Bild b={DEPA.vw} className="h-full min-h-64" />
+          <Tile t={FORSALJNING} delay={160} />
+          <Reveal delay={0} className="sm:col-span-2 lg:col-span-4">
+            <Bild b={DEPA.sunseeker} className="h-full min-h-72" />
           </Reveal>
-          <Tile t={BATAR} delay={0} />
+          <Tile t={BATAR} delay={80} />
+        </div>
+      </section>
+
+      {/* Senaste jobben */}
+      <section className="container-page pt-28 sm:pt-36">
+        <div className="grid gap-10 lg:grid-cols-[1fr_1.6fr] lg:gap-20">
+          <Reveal>
+            <p className="eyebrow">Senaste jobben</p>
+            <h2 className="display-xl mt-4 text-4xl sm:text-5xl">Nytt från depån</h2>
+            <p className="mt-6 max-w-sm leading-relaxed text-muted-foreground">
+              Ett urval av det vi gjort på sistone. Fler jobb och bilder på{" "}
+              <a
+                href={FORETAG.instagram}
+                target="_blank"
+                rel="noreferrer"
+                className="underline underline-offset-4 transition-colors hover:text-signal"
+              >
+                Instagram
+              </a>
+              .
+            </p>
+          </Reveal>
+          <Reveal delay={120}>
+            <ul className="divide-y divide-line border-y border-line">
+              {SENASTE.map((s) => (
+                <li
+                  key={s.fordon}
+                  className="grid gap-1 py-5 sm:grid-cols-[12rem_1fr] sm:items-baseline sm:gap-6"
+                >
+                  <span className="flex items-center gap-3 font-display text-lg font-extrabold tracking-tight uppercase [font-stretch:125%]">
+                    <span className="lgf w-2.5 shrink-0 text-orange" aria-hidden="true" />
+                    {s.fordon}
+                  </span>
+                  <span className="text-muted-foreground sm:text-lg">{s.jobb}</span>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
         </div>
       </section>
 
