@@ -84,7 +84,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content:
           "AOA Lidköping bygger om personbilar till A-traktorer med fokus på kvalitet, säkerhet och stil. Depå för service, reparation, försäljning och rekond. Kunder från hela Sverige.",
       },
-      { name: "theme-color", content: "#14161f" },
+      { name: "theme-color", content: "#f4f4f6" },
       { property: "og:site_name", content: FORETAG.kortnamn },
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "sv_SE" },
@@ -92,10 +92,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "icon", href: "/favicon.ico?v=1", sizes: "any" },
-      { rel: "icon", href: "/favicon-32.png?v=1", type: "image/png", sizes: "32x32" },
-      { rel: "icon", href: "/icon-192.png?v=1", type: "image/png", sizes: "192x192" },
-      { rel: "apple-touch-icon", href: "/apple-touch-icon.png?v=1" },
+      { rel: "icon", href: "/favicon.ico?v=2", sizes: "any" },
+      { rel: "icon", href: "/favicon-32.png?v=2", type: "image/png", sizes: "32x32" },
+      { rel: "icon", href: "/icon-192.png?v=2", type: "image/png", sizes: "192x192" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png?v=2" },
     ],
     scripts: [
       {

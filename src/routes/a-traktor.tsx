@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ByggeBild, KnappPil, Omdomen, SlutCta } from "@/components/Block";
+import { Bild, KnappPil, Omdomen, SlutCta } from "@/components/Block";
 import { Reveal } from "@/components/Reveal";
 import { FORETAG } from "@/lib/foretag";
 import { BYGGEN, FAKTA, STEG } from "@/lib/innehall";
@@ -32,7 +32,7 @@ function ATraktor() {
         <Reveal>
           <p className="eyebrow">A-traktor</p>
           <h1 className="display-xl mt-4 max-w-5xl text-[clamp(2rem,6.6vw,5rem)]">
-            Ombyggnad till <span className="text-signal">A-traktor</span>
+            Ombyggnad till <span className="markera">A-traktor</span>
           </h1>
           <p className="mt-8 max-w-xl text-lg leading-relaxed text-muted-foreground">
             Att bygga om personbilar till A-traktorer är vår specialitet. Vi lägger lika mycket
@@ -50,11 +50,11 @@ function ATraktor() {
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {BYGGEN.map((b, i) => (
             <Reveal
-              key={b.modell}
+              key={b.etikett}
               delay={i * 90}
               className={i === 0 ? "sm:col-span-2 lg:col-span-1" : ""}
             >
-              <ByggeBild b={b} className="aspect-[4/3.4] h-full" />
+              <Bild b={b} className="aspect-[4/3.4] h-full" />
             </Reveal>
           ))}
         </div>
@@ -87,12 +87,14 @@ function ATraktor() {
               <Reveal delay={i * 90} className="h-full">
                 <div
                   className={`flex h-full min-h-64 flex-col justify-between rounded-lg p-7 ${
-                    i === STEG.length - 1 ? "bg-primary text-primary-foreground" : "bg-card"
+                    i === STEG.length - 1
+                      ? "bg-ink text-ink-foreground"
+                      : "border border-line bg-card"
                   }`}
                 >
                   <span
                     className={`display-xl text-5xl tabular-nums ${
-                      i === STEG.length - 1 ? "" : "text-signal"
+                      i === STEG.length - 1 ? "text-orange" : "text-signal"
                     }`}
                   >
                     0{i + 1}
@@ -101,7 +103,7 @@ function ATraktor() {
                     <h3 className="text-xl sm:text-2xl">{s.titel}</h3>
                     <p
                       className={`mt-3 text-sm leading-relaxed ${
-                        i === STEG.length - 1 ? "" : "text-muted-foreground"
+                        i === STEG.length - 1 ? "text-white/80" : "text-muted-foreground"
                       }`}
                     >
                       {s.text}

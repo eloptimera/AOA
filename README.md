@@ -1,6 +1,6 @@
 # AOA Lidköping – webbplats
 
-Webbplats för AOA Lidköping AB (ombyggnad till A-traktor + depå). Byggd med TanStack Start, React och Tailwind, med samma designsystem som Önneköps Bilverkstad (mörkt tema, Archivo/Geist) men med LGF-orange som accent.
+Webbplats för AOA Lidköping AB (ombyggnad till A-traktor + depå). Byggd med TanStack Start, React och Tailwind, med samma layout och komponenter som Önneköps Bilverkstad (Archivo/Geist), men färgerna är hämtade ur AOA:s två loggor: ljus bas, blågrå #313440 och LGF-orange #F98C1A som enda accent.
 
 ```sh
 bun install

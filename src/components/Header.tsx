@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { ArrowUpRight, Phone } from "lucide-react";
 import { useEffect, useState } from "react";
 import { FORETAG, TELEFON } from "@/lib/foretag";
-import logo from "@/assets/foto/logo.webp";
+import logo from "@/assets/foto/logo-lidkoping.webp";
 
 const LANKAR = [
   { to: "/", label: "Hem" },
@@ -36,9 +36,9 @@ export function Header() {
       >
         Hoppa till innehållet
       </a>
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-6 rounded-full border border-white/10 bg-background/80 pr-2.5 pl-5 shadow-[0_12px_40px_-12px_rgb(0_0_0/0.7),inset_0_1px_0_rgb(255_255_255/0.06)] backdrop-blur-xl">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-6 rounded-full border border-line bg-background/85 pr-2.5 pl-5 shadow-[0_12px_32px_-16px_rgb(49_52_64/0.3)] backdrop-blur-xl">
         <Link to="/" aria-label={`${FORETAG.kortnamn}, startsida`} onClick={() => setOppen(false)}>
-          <img src={logo} alt={FORETAG.kortnamn} width={640} height={260} className="h-10 w-auto" />
+          <img src={logo} alt={FORETAG.kortnamn} width={720} height={292} className="h-10 w-auto" />
         </Link>
 
         <nav className="hidden items-center gap-7 md:flex" aria-label="Huvudmeny">

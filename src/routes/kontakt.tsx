@@ -42,16 +42,16 @@ function Kontakt() {
 
       <section className="container-page grid gap-3 pt-14 lg:grid-cols-[1.25fr_1fr]">
         <Reveal>
-          <div className="flex h-full min-h-72 flex-col justify-between rounded-lg bg-primary p-7 text-primary-foreground sm:p-10">
-            <Phone className="size-9" strokeWidth={1.5} aria-hidden="true" />
+          <div className="flex h-full min-h-72 flex-col justify-between rounded-lg bg-ink p-7 text-ink-foreground sm:p-10">
+            <Phone className="size-9 text-orange" strokeWidth={1.5} aria-hidden="true" />
             <div className="mt-12">
-              <p className="text-sm">Ring oss</p>
+              <p className="text-sm text-white/80">Ring oss</p>
               <ul className="mt-2 space-y-1">
                 {FORETAG.telefoner.map((t) => (
                   <li key={t.lank}>
                     <a
                       href={`tel:${t.lank}`}
-                      className="display-xl inline-block text-[clamp(1.75rem,5.4vw,3.75rem)] tabular-nums transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:translate-x-2"
+                      className="display-xl inline-block text-[clamp(1.75rem,5.4vw,3.75rem)] tabular-nums transition-[transform,color] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:translate-x-2 hover:text-orange"
                     >
                       {t.visning}
                     </a>
@@ -63,7 +63,7 @@ function Kontakt() {
         </Reveal>
 
         <Reveal delay={120}>
-          <div className="flex h-full flex-col justify-between rounded-lg bg-card p-7 sm:p-10">
+          <div className="flex h-full flex-col justify-between rounded-lg border border-line bg-card p-7 sm:p-10">
             <MapPin className="size-9 text-signal" strokeWidth={1.5} aria-hidden="true" />
             <div className="mt-12">
               <h2 className="text-lg">Hitta hit</h2>
@@ -113,7 +113,7 @@ function Kontakt() {
             href={FORETAG.instagram}
             target="_blank"
             rel="noreferrer"
-            className="group flex h-full flex-col justify-between rounded-lg bg-card p-7 sm:p-10"
+            className="group flex h-full flex-col justify-between rounded-lg border border-line bg-card p-7 sm:p-10"
           >
             <Instagram className="size-9 text-signal" strokeWidth={1.5} aria-hidden="true" />
             <div className="mt-12">

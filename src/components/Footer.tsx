@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { FORETAG } from "@/lib/foretag";
-import logo from "@/assets/foto/logo.webp";
+import logo from "@/assets/foto/logo-lidkoping.webp";
 
 const LANK = "transition-colors hover:text-foreground";
 
@@ -12,8 +12,8 @@ export function Footer() {
           <img
             src={logo}
             alt={FORETAG.kortnamn}
-            width={640}
-            height={260}
+            width={720}
+            height={292}
             loading="lazy"
             className="h-16 w-auto"
           />

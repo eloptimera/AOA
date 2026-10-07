@@ -3,7 +3,7 @@ import { ArrowUpRight } from "lucide-react";
 import type { ReactNode } from "react";
 import { Reveal } from "@/components/Reveal";
 import { FORETAG, TELEFON } from "@/lib/foretag";
-import { OMDOMEN, type Bygge } from "@/lib/innehall";
+import { OMDOMEN, type Foto } from "@/lib/innehall";
 
 /** Rund knapp med pil i egen cirkel. */
 export function KnappPil({ to, children }: { to: "/offert" | "/kontakt"; children: ReactNode }) {
@@ -40,18 +40,18 @@ export function PilLank({
   );
 }
 
-/** Foto av ett bygge med modellnamn i en etikett. */
-export function ByggeBild({
+/** Foto med en kort etikett i nedre hörnet. */
+export function Bild({
   b,
   className = "",
   prioritet = false,
 }: {
-  b: Bygge;
+  b: Foto;
   className?: string;
   prioritet?: boolean;
 }) {
   return (
-    <figure className={`relative min-h-64 overflow-hidden rounded-lg ${className}`}>
+    <figure className={`relative overflow-hidden rounded-lg ${className}`}>
       <img
         src={b.src}
         alt={b.alt}
@@ -61,9 +61,9 @@ export function ByggeBild({
         fetchPriority={prioritet ? "high" : "auto"}
         className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.32,0.72,0,1)] hover:scale-105"
       />
-      <figcaption className="absolute bottom-3 left-3 inline-flex items-center gap-2 rounded-full bg-background/85 px-3 py-1.5 text-xs font-medium backdrop-blur-md">
-        <span className="lgf w-2.5 text-primary" aria-hidden="true" />
-        {b.modell}
+      <figcaption className="absolute bottom-3 left-3 inline-flex items-center gap-2 rounded-full bg-white/90 px-3 py-1.5 text-xs font-medium shadow-sm backdrop-blur-md">
+        <span className="lgf w-2.5 text-orange" aria-hidden="true" />
+        {b.etikett}
       </figcaption>
     </figure>
   );
@@ -114,19 +114,20 @@ export function SlutCta({ rubrik }: { rubrik: string }) {
   return (
     <section className="container-page pt-28 sm:pt-40">
       <Reveal>
-        <div className="relative isolate overflow-hidden rounded-xl bg-primary px-6 py-14 text-primary-foreground sm:px-14 sm:py-20">
+        <div className="relative isolate overflow-hidden rounded-xl bg-ink px-6 py-14 text-ink-foreground sm:px-14 sm:py-20">
           <span
             aria-hidden="true"
-            className="lgf absolute -right-16 -bottom-10 -z-10 hidden w-[26rem] text-black/10 lg:block"
+            className="lgf absolute -right-10 -bottom-14 -z-10 hidden w-[24rem] text-orange lg:block"
           />
-          <h2 className="max-w-xl text-3xl sm:text-4xl">{rubrik}</h2>
+          <p className="eyebrow !text-orange">Kontakt</p>
+          <h2 className="mt-4 max-w-xl text-3xl sm:text-4xl">{rubrik}</h2>
           <a
             href={`tel:${TELEFON.lank}`}
             className="display-xl mt-6 inline-block text-[clamp(2rem,9vw,6.5rem)] tabular-nums transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:translate-x-2"
           >
             {TELEFON.visning}
           </a>
-          <p className="mt-6 max-w-md leading-relaxed">
+          <p className="mt-6 max-w-md leading-relaxed text-white/85">
             Eller mejla{" "}
             <a
               href={`mailto:${FORETAG.epost}`}
@@ -135,7 +136,10 @@ export function SlutCta({ rubrik }: { rubrik: string }) {
               {FORETAG.epost}
             </a>
             .{" "}
-            <Link to="/offert" className="font-semibold underline underline-offset-4">
+            <Link
+              to="/offert"
+              className="font-semibold text-white underline underline-offset-4 hover:text-orange"
+            >
               Skicka en offertförfrågan
             </Link>
           </p>

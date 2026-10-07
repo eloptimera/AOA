@@ -1,10 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowUpRight } from "lucide-react";
-import { ByggeBild, KnappPil, Omdomen, PilLank, SlutCta } from "@/components/Block";
+import { Bild, KnappPil, Omdomen, PilLank, SlutCta } from "@/components/Block";
 import { Reveal } from "@/components/Reveal";
 import { FORETAG } from "@/lib/foretag";
-import { BYGGEN, FAKTA } from "@/lib/innehall";
-import rekond from "@/assets/foto/bmw-f31-rekond.webp";
+import { BYGGEN, DEPA, FAKTA } from "@/lib/innehall";
+import logoLidkoping from "@/assets/foto/logo-lidkoping.webp";
+import logoDepa from "@/assets/foto/logo-depa.webp";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -49,18 +50,20 @@ function Start() {
 
           <h1 className="display-xl order-1 text-[clamp(2rem,8vw,4.75rem)] lg:order-2 lg:text-right">
             <span className="hero-rise block [--i:0]">Vi bygger din</span>
-            <span className="hero-rise block text-signal [--i:1]">A-traktor</span>
+            <span className="hero-rise block [--i:1]">
+              <span className="markera">A-traktor</span>
+            </span>
           </h1>
         </div>
 
-        <div className="hero-frame flex flex-1 rounded-xl border border-white/10 bg-white/5 p-1.5">
+        <div className="hero-frame flex flex-1 rounded-xl border border-line bg-card p-1.5 shadow-[0_30px_60px_-30px_rgb(49_52_64/0.35)]">
           <div className="grid flex-1 grid-cols-2 gap-1.5 sm:grid-cols-3">
             {BYGGEN.map((b, i) => (
-              <ByggeBild
-                key={b.modell}
+              <Bild
+                key={b.etikett}
                 b={b}
                 prioritet
-                className={i === 0 ? "col-span-2 sm:col-span-1" : "max-sm:min-h-44"}
+                className={i === 0 ? "col-span-2 min-h-64 sm:col-span-1" : "min-h-44 sm:min-h-64"}
               />
             ))}
           </div>
@@ -77,57 +80,47 @@ function Start() {
         </Reveal>
 
         <div className="mt-12 grid gap-3 lg:grid-cols-2">
-          <Reveal>
-            <Link
-              to="/a-traktor"
-              className="group flex h-full min-h-96 flex-col justify-between rounded-lg bg-primary p-7 text-primary-foreground transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-1 sm:p-10"
-            >
-              <div className="flex items-start justify-between">
-                <span className="lgf w-12 text-primary-foreground" aria-hidden="true" />
-                <span className="flex size-12 items-center justify-center rounded-full bg-black/15 transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
-                  <ArrowUpRight className="size-5" strokeWidth={1.75} aria-hidden="true" />
-                </span>
-              </div>
-              <div className="mt-16">
-                <h3 className="text-3xl sm:text-5xl">A-traktor</h3>
-                <p className="mt-4 max-w-md leading-relaxed">
-                  Det vi är mest kända för. Vi bygger om din personbil till en A-traktor med fokus
-                  på kvalitet, säkerhet och stil. Varje bygge anpassas efter bilen och dina
-                  önskemål.
-                </p>
-              </div>
-            </Link>
-          </Reveal>
+          <Verksamhet
+            to="/a-traktor"
+            logo={logoLidkoping}
+            logoH={292}
+            namn="AOA Lidköping"
+            rubrik="Ombyggnad till A-traktor"
+            text="Det vi är mest kända för. Vi bygger om din personbil till en A-traktor, anpassad efter bilen och dina önskemål."
+            punkter={[
+              "Kvalitet, säkerhet och stil",
+              "Varje bygge anpassas",
+              "Kunder från hela Sverige",
+            ]}
+            delay={0}
+          />
+          <Verksamhet
+            to="/depa"
+            logo={logoDepa}
+            logoH={334}
+            namn="AOA Depå"
+            rubrik="Service, försäljning och rekond"
+            text="I depån tar vi hand om bilen när den behöver lagas, säljas eller fräschas upp."
+            punkter={["Service och reparation", "Försäljningsuppdrag", "Rekond"]}
+            delay={100}
+          />
+        </div>
+      </section>
 
-          <Reveal delay={100}>
-            <Link
-              to="/depa"
-              className="group relative flex h-full min-h-96 flex-col justify-end overflow-hidden rounded-lg bg-card p-7 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-1 sm:p-10"
-            >
-              <img
-                src={rekond}
-                alt=""
-                width={606}
-                height={537}
-                loading="lazy"
-                className="absolute inset-0 h-full w-full object-cover opacity-55 transition-transform duration-[1200ms] ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-105"
-              />
-              <span
-                aria-hidden="true"
-                className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-transparent"
-              />
-              <span className="absolute top-7 right-7 flex size-12 items-center justify-center rounded-full bg-foreground text-background transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 sm:top-10 sm:right-10">
-                <ArrowUpRight className="size-5" strokeWidth={1.75} aria-hidden="true" />
-              </span>
-              <div className="relative">
-                <h3 className="text-3xl sm:text-5xl">Depå</h3>
-                <p className="mt-4 max-w-md leading-relaxed text-muted-foreground">
-                  Service och reparationer, försäljningsuppdrag och rekond. Vi tar hand om bilen,
-                  och båten.
-                </p>
-              </div>
-            </Link>
-          </Reveal>
+      {/* Från depån */}
+      <section className="container-page pt-20">
+        <Reveal>
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <p className="eyebrow">Från depån</p>
+            <PilLank to="/depa">Mer om depån</PilLank>
+          </div>
+        </Reveal>
+        <div className="mt-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
+          {[DEPA.porsche, DEPA.bmwVit, DEPA.vw, DEPA.audiA6].map((b, i) => (
+            <Reveal key={b.etikett} delay={i * 80}>
+              <Bild b={b} className="aspect-[4/5]" />
+            </Reveal>
+          ))}
         </div>
       </section>
 
@@ -167,5 +160,58 @@ function Start() {
 
       <SlutCta rubrik="Dags att bygga? Hör av dig" />
     </>
+  );
+}
+
+function Verksamhet({
+  to,
+  logo,
+  logoH,
+  namn,
+  rubrik,
+  text,
+  punkter,
+  delay,
+}: {
+  to: "/a-traktor" | "/depa";
+  logo: string;
+  logoH: number;
+  namn: string;
+  rubrik: string;
+  text: string;
+  punkter: readonly string[];
+  delay: number;
+}) {
+  return (
+    <Reveal delay={delay}>
+      <Link
+        to={to}
+        className="group flex h-full flex-col rounded-lg border border-line bg-card p-7 transition-[transform,box-shadow] duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-1 hover:shadow-[0_24px_50px_-28px_rgb(49_52_64/0.4)] sm:p-10"
+      >
+        <div className="flex items-start justify-between gap-6">
+          <img
+            src={logo}
+            alt={namn}
+            width={720}
+            height={logoH}
+            loading="lazy"
+            className="h-20 w-auto sm:h-24"
+          />
+          <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-ink text-ink-foreground transition-[transform,background-color,color] duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:bg-primary group-hover:text-primary-foreground">
+            <ArrowUpRight className="size-5" strokeWidth={1.75} aria-hidden="true" />
+          </span>
+        </div>
+        <h3 className="mt-12 text-2xl sm:text-4xl">{rubrik}</h3>
+        <p className="mt-4 max-w-md leading-relaxed text-muted-foreground">{text}</p>
+        <ul className="mt-8 grid gap-2 border-t border-line pt-6 text-sm font-medium">
+          {punkter.map((p) => (
+            <li key={p} className="flex items-center gap-3">
+              <span className="lgf w-2.5 text-orange" aria-hidden="true" />
+              {p}
+            </li>
+          ))}
+        </ul>
+      </Link>
+    </Reveal>
   );
 }

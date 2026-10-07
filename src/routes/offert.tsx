@@ -124,7 +124,7 @@ function Offert() {
           <form
             onSubmit={onSubmit}
             noValidate
-            className="grid gap-8 rounded-lg bg-card p-7 sm:p-10"
+            className="grid gap-8 rounded-lg border border-line bg-card p-7 sm:p-10"
           >
             <fieldset aria-describedby={fel.arende ? "arende-fel" : undefined} className="min-w-0">
               <legend className="text-sm font-medium">Vad gäller det?</legend>
@@ -136,7 +136,7 @@ function Offert() {
                       key={a}
                       className={`relative flex cursor-pointer items-center gap-3 rounded-lg border px-4 py-3 text-sm transition-colors duration-300 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-ring ${
                         pa
-                          ? "border-primary bg-primary font-medium text-primary-foreground"
+                          ? "border-ink bg-ink font-medium text-ink-foreground"
                           : "border-input bg-background hover:border-foreground/60"
                       }`}
                     >
@@ -151,10 +151,10 @@ function Offert() {
                       <span
                         aria-hidden="true"
                         className={`flex size-5 shrink-0 items-center justify-center rounded-full border ${
-                          pa ? "border-primary-foreground bg-primary-foreground" : "border-input"
+                          pa ? "border-orange bg-orange" : "border-input"
                         }`}
                       >
-                        {pa && <Check className="size-3.5 text-primary" strokeWidth={3} />}
+                        {pa && <Check className="size-3.5 text-ink" strokeWidth={3} />}
                       </span>
                       {a}
                     </label>
