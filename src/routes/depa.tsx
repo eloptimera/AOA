@@ -2,8 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Anchor, ArrowDownToLine, Sparkles, Tag, Wrench, type LucideIcon } from "lucide-react";
 import { Bild, KnappPil, SlutCta } from "@/components/Block";
 import { Reveal } from "@/components/Reveal";
-import { DEPA, SENASTE } from "@/lib/innehall";
-import { FORETAG } from "@/lib/foretag";
+import { DEPA } from "@/lib/innehall";
 import logoDepa from "@/assets/foto/logo-depa.webp";
 
 export const Route = createFileRoute("/depa")({
@@ -38,7 +37,7 @@ type Tjanst = {
 
 const SERVICE: Tjanst = {
   titel: "Service och reparation",
-  text: "Från vanlig service till större reparationer, till exempel rengöring av partikelfilter. Vi felsöker, lagar och ser till att bilen går som den ska.",
+  text: "Från vanlig service till större reparationer, till exempel rengöring av partikelfiltret på en BMW 320d. Vi felsöker, lagar och ser till att bilen går som den ska.",
   ikon: Wrench,
   span: "sm:col-span-2 lg:col-span-4",
   ton: "signal",
@@ -46,7 +45,7 @@ const SERVICE: Tjanst = {
 
 const SANKNING: Tjanst = {
   titel: "Sänkning",
-  text: "Sänkning av originalluftfjädring med stag, till exempel på Porsche Macan och BMW X5.",
+  text: "Vi monterar stag för att sänka bilar med originalluftfjädring. Senast en Porsche Macan GTS och en BMW X5.",
   ikon: ArrowDownToLine,
   span: "lg:col-span-2",
   ton: "yta",
@@ -70,7 +69,7 @@ const FORSALJNING: Tjanst = {
 
 const BATAR: Tjanst = {
   titel: "Båtar",
-  text: "Polering och vaxning av båtar. Vi kommer gärna ut till båten, senast till en Sunseeker 62 på Smögen.",
+  text: "Polering och vaxning av båtar. Vi kommer gärna ut till båten. Senast polerade och vaxade vi en Sunseeker 62 på plats på Smögen.",
   ikon: Anchor,
   span: "sm:col-span-2 lg:col-span-2",
   ton: "lyft",
@@ -129,47 +128,9 @@ function Depa() {
           </Reveal>
           <Tile t={FORSALJNING} delay={160} />
           <Reveal delay={0} className="sm:col-span-2 lg:col-span-4">
-            <Bild b={DEPA.sunseeker} className="h-full min-h-72" />
+            <Bild b={DEPA.sunseeker} className="h-full min-h-80 lg:min-h-[28rem]" />
           </Reveal>
           <Tile t={BATAR} delay={80} />
-        </div>
-      </section>
-
-      {/* Senaste jobben */}
-      <section className="container-page pt-28 sm:pt-36">
-        <div className="grid gap-10 lg:grid-cols-[1fr_1.6fr] lg:gap-20">
-          <Reveal>
-            <p className="eyebrow">Senaste jobben</p>
-            <h2 className="display-xl mt-4 text-4xl sm:text-5xl">Nytt från depån</h2>
-            <p className="mt-6 max-w-sm leading-relaxed text-muted-foreground">
-              Ett urval av det vi gjort på sistone. Fler jobb och bilder på{" "}
-              <a
-                href={FORETAG.instagram}
-                target="_blank"
-                rel="noreferrer"
-                className="underline underline-offset-4 transition-colors hover:text-signal"
-              >
-                Instagram
-              </a>
-              .
-            </p>
-          </Reveal>
-          <Reveal delay={120}>
-            <ul className="divide-y divide-line border-y border-line">
-              {SENASTE.map((s) => (
-                <li
-                  key={s.fordon}
-                  className="grid gap-1 py-5 sm:grid-cols-[12rem_1fr] sm:items-baseline sm:gap-6"
-                >
-                  <span className="flex items-center gap-3 font-display text-lg font-extrabold tracking-tight uppercase [font-stretch:125%]">
-                    <span className="lgf w-2.5 shrink-0 text-orange" aria-hidden="true" />
-                    {s.fordon}
-                  </span>
-                  <span className="text-muted-foreground sm:text-lg">{s.jobb}</span>
-                </li>
-              ))}
-            </ul>
-          </Reveal>
         </div>
       </section>
 

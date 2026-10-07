@@ -115,9 +115,14 @@ function Start() {
             <PilLank to="/depa">Mer om depån</PilLank>
           </div>
         </Reveal>
-        <div className="mt-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
+        {/* Svepbar rad på mobil, rutnät från sm. */}
+        <div className="-mx-5 mt-6 flex snap-x snap-mandatory scroll-px-5 gap-3 overflow-x-auto px-5 pb-2 sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-4">
           {[DEPA.porsche, DEPA.bmwVit, DEPA.vw, DEPA.audiA6].map((b, i) => (
-            <Reveal key={b.etikett} delay={i * 80}>
+            <Reveal
+              key={b.etikett}
+              delay={i * 80}
+              className="w-[78%] shrink-0 snap-start sm:w-auto"
+            >
               <Bild b={b} className="aspect-[4/5]" />
             </Reveal>
           ))}

@@ -8,12 +8,21 @@ import vw from "@/assets/foto/vw-transporter-rekond.webp";
 import audiA6 from "@/assets/foto/audi-a6-sald.webp";
 import sunseeker from "@/assets/foto/sunseeker-polering.webp";
 
-export type Foto = { src: string; w: number; h: number; etikett: string; alt: string };
+export type Foto = {
+  src: string;
+  w: number;
+  h: number;
+  etikett: string;
+  alt: string;
+  /** Var i bilden motivet sitter (object-position), så att beskärningen träffar rätt. */
+  fokus?: string;
+};
 
 /** Färdiga A-traktorer, fotade utanför verkstaden. */
 export const BYGGEN: readonly Foto[] = [
   {
     src: bmwE90,
+    fokus: "50% 62%",
     w: 642,
     h: 541,
     etikett: "BMW 3-serie",
@@ -21,6 +30,7 @@ export const BYGGEN: readonly Foto[] = [
   },
   {
     src: mercedes,
+    fokus: "50% 60%",
     w: 596,
     h: 500,
     etikett: "Mercedes E-klass",
@@ -28,6 +38,7 @@ export const BYGGEN: readonly Foto[] = [
   },
   {
     src: audi,
+    fokus: "50% 45%",
     w: 547,
     h: 452,
     etikett: "Audi A4 Avant",
@@ -39,13 +50,15 @@ export const BYGGEN: readonly Foto[] = [
 export const DEPA = {
   porsche: {
     src: porsche,
+    fokus: "50% 62%",
     w: 627,
     h: 617,
-    etikett: "Rekond · Porsche Macan GTS",
-    alt: "Turkosblå Porsche Macan GTS med skylten AOA REKOND, nyrekondad inne i verkstaden",
+    etikett: "Sänkning · Porsche Macan GTS",
+    alt: "Turkosblå Porsche Macan GTS, sänkt med stag på originalluftfjädringen, i verkstaden",
   },
   bmwVit: {
     src: bmwVit,
+    fokus: "50% 62%",
     w: 635,
     h: 542,
     etikett: "Rekond · BMW 3-serie",
@@ -53,6 +66,7 @@ export const DEPA = {
   },
   bmwGra: {
     src: bmwGra,
+    fokus: "50% 60%",
     w: 606,
     h: 537,
     etikett: "Rekond · BMW 3-serie",
@@ -60,6 +74,7 @@ export const DEPA = {
   },
   vw: {
     src: vw,
+    fokus: "50% 60%",
     w: 635,
     h: 607,
     etikett: "Rekond · VW Transporter",
@@ -67,6 +82,7 @@ export const DEPA = {
   },
   audiA6: {
     src: audiA6,
+    fokus: "50% 72%",
     w: 640,
     h: 685,
     etikett: "Såld · Audi A6",
@@ -74,20 +90,13 @@ export const DEPA = {
   },
   sunseeker: {
     src: sunseeker,
+    fokus: "50% 66%",
     w: 591,
     h: 717,
-    etikett: "Polering · Sunseeker, Smögen",
-    alt: "Vit Sunseeker-motorbåt nypolerad vid bryggan framför röda sjöbodar på Smögen",
+    etikett: "Polering och vaxning · Sunseeker 62",
+    alt: "Vit Sunseeker 62, nypolerad och vaxad, vid bryggan framför röda sjöbodar på Smögen",
   },
 } satisfies Record<string, Foto>;
-
-/** Senaste jobben från depån (från Instagram). Uppdatera med nya jobb. */
-export const SENASTE = [
-  { jobb: "Sänkning av originalluftfjädring med stag", fordon: "Porsche Macan GTS" },
-  { jobb: "Sänkning av originalluftfjädring med stag", fordon: "BMW X5" },
-  { jobb: "Rengöring av partikelfilter", fordon: "BMW 320d" },
-  { jobb: "Polering och vaxning, på plats hos kunden på Smögen", fordon: "Sunseeker 62" },
-] as const;
 
 /** Fakta om fordonsslaget A-traktor (gäller alla, inte bara AOA:s byggen). */
 export const FAKTA = [
