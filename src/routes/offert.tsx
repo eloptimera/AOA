@@ -1,23 +1,22 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
+import { ArrowUpRight, Check, MessageSquareText } from "lucide-react";
 import { useState } from "react";
-import { PageHero, Mark } from "@/components/Heading";
 import { Reveal } from "@/components/Reveal";
-import { FORETAG } from "@/lib/foretag";
-import { skickaOffert } from "@/lib/formular";
+import { FORETAG, TELEFON, epostLank, smsLank } from "@/lib/foretag";
 
 export const Route = createFileRoute("/offert")({
   head: () => ({
     meta: [
-      { title: "Få fri offert – AOA" },
+      { title: "Begär offert | AOA Lidköping" },
       {
         name: "description",
         content:
-          "Berätta vad du behöver hjälp med och få en fri offert på kontors-, fastighets- och lokalvård i Göteborg från AOA.",
+          "Begär offert på ombyggnad till A-traktor, service, reparation, rekond eller försäljningsuppdrag hos AOA Lidköping.",
       },
-      { property: "og:title", content: "Få fri offert – AOA" },
+      { property: "og:title", content: "Begär offert | AOA Lidköping" },
       {
         property: "og:description",
-        content: "Berätta vad du behöver hjälp med och få en fri offert.",
+        content: "Berätta om bilen och vad du vill ha gjort, så återkommer vi med pris.",
       },
       { property: "og:url", content: "/offert" },
     ],
@@ -26,212 +25,253 @@ export const Route = createFileRoute("/offert")({
   component: Offert,
 });
 
-const UPPDRAGSTYPER = ["Kontorsstädning", "Fastighetsstädning", "Lokalvård", "Annat"];
+const ARENDEN = [
+  "Ombyggnad till A-traktor",
+  "Service eller reparation",
+  "Rekond",
+  "Försäljningsuppdrag",
+  "Båt",
+  "Annat",
+] as const;
+
+type Fel = Partial<Record<"namn" | "telefon" | "arende" | "beskrivning", string>>;
 
 function Offert() {
-  const [typer, setTyper] = useState<string[]>([]);
-  const [filer, setFiler] = useState<File[]>([]);
-  const [skickar, setSkickar] = useState(false);
-  const [klart, setKlart] = useState(false);
-  const [fel, setFel] = useState<string | null>(null);
+  const [arende, setArende] = useState<string>("");
+  const [fel, setFel] = useState<Fel>({});
+  const [skickat, setSkickat] = useState<"" | "epost" | "sms">("");
 
-  const vaxla = (t: string) =>
-    setTyper((v) => (v.includes(t) ? v.filter((x) => x !== t) : [...v, t]));
-
-  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setFel(null);
-    setSkickar(true);
-
+    const satt =
+      (e.nativeEvent as SubmitEvent).submitter?.getAttribute("value") === "sms" ? "sms" : "epost";
     const fd = new FormData(e.currentTarget);
-    try {
-      const yta = fd.get("yta_kvm");
-      const datum = fd.get("onskat_startdatum");
+    const namn = String(fd.get("namn") ?? "").trim();
+    const telefon = String(fd.get("telefon") ?? "").trim();
+    const bil = String(fd.get("bil") ?? "").trim();
+    const regnr = String(fd.get("regnr") ?? "").trim();
+    const beskrivning = String(fd.get("beskrivning") ?? "").trim();
 
-      await skickaOffert(
-        {
-          namn: String(fd.get("namn") ?? ""),
-          telefon: String(fd.get("telefon") ?? ""),
-          epost: String(fd.get("epost") ?? ""),
-          adress: String(fd.get("adress") ?? ""),
-          uppdragstyper: typer,
-          yta_kvm: yta ? Number(yta) : null,
-          onskat_startdatum: datum ? String(datum) : null,
-          meddelande: String(fd.get("meddelande") ?? ""),
-          gdpr_samtycke: true,
-        },
-        filer,
-      );
-      setKlart(true);
-    } catch {
-      setFel("Något gick fel när förfrågan skulle skickas. Försök igen om en stund.");
-    } finally {
-      setSkickar(false);
-    }
-  }
+    const nya: Fel = {};
+    if (!arende) nya.arende = "Välj vad förfrågan gäller.";
+    if (!beskrivning) nya.beskrivning = "Beskriv kort vad du vill ha gjort.";
+    if (!namn) nya.namn = "Skriv ditt namn.";
+    if (!telefon) nya.telefon = "Skriv ett nummer vi kan nå dig på.";
+    setFel(nya);
+    if (Object.keys(nya).length > 0) return;
 
-  if (klart) {
-    return (
-      <section className="container-page py-28">
-        <div
-          role="status"
-          className="mx-auto max-w-xl rounded-[2rem] border-2 border-line bg-white p-10 text-center"
-        >
-          <p className="eyebrow">Tack!</p>
-          <h1 className="mt-5 text-3xl">Din förfrågan är mottagen</h1>
-          <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
-            Vi återkommer så snart vi kan.
-            {FORETAG.telefon && ` Är det brådskande går det bra att ringa ${FORETAG.telefon}.`}
-          </p>
-          <Link to="/" className="btn-base btn-outline mt-8">
-            Tillbaka till startsidan
-          </Link>
-        </div>
-      </section>
-    );
+    const rader = [
+      "Hej! Jag vill ha en offert.",
+      "",
+      `Gäller: ${arende}`,
+      bil ? `Fordon: ${bil}` : null,
+      regnr ? `Regnr: ${regnr.toUpperCase()}` : null,
+      `Beskrivning: ${beskrivning}`,
+      "",
+      `Namn: ${namn}`,
+      `Telefon: ${telefon}`,
+    ].filter((r) => r !== null);
+
+    setSkickat(satt);
+    window.location.href =
+      satt === "sms"
+        ? smsLank(rader.join("\n"))
+        : epostLank(`Offertförfrågan: ${arende}`, rader.join("\n"));
   }
 
   return (
     <>
-      <PageHero
-        eyebrow="Offertförfrågan"
-        title={
-          <>
-            Berätta vad du behöver <Mark>hjälp med</Mark>
-          </>
-        }
-        intro="Ju mer du berättar, desto bättre underlag får vi till din offert. Offerten är fri."
-      />
-
-      <section className="container-page py-16 sm:py-24">
+      <section className="container-page pt-12 sm:pt-20">
         <Reveal>
+          <h1 className="display-xl max-w-4xl text-[clamp(2rem,6.6vw,5rem)]">Begär offert</h1>
+          <p className="mt-8 max-w-xl text-lg leading-relaxed text-muted-foreground">
+            Vi har inga fasta priser, eftersom varje bil och varje jobb är olika. Berätta vad det
+            gäller så återkommer vi med ett pris.
+          </p>
+        </Reveal>
+      </section>
+
+      <section className="container-page grid gap-12 pt-14 lg:grid-cols-[1fr_2fr] lg:gap-20">
+        <Reveal>
+          <MessageSquareText className="size-9 text-signal" strokeWidth={1.5} aria-hidden="true" />
+          <h2 className="display-xl mt-6 text-2xl sm:text-3xl">Så går det till</h2>
+          <p className="mt-5 max-w-sm leading-relaxed text-muted-foreground">
+            Formuläret skickar ingenting själv. Det skriver ett färdigt meddelande som öppnas i ditt
+            e-postprogram eller din SMS-app, och du trycker på skicka.
+          </p>
+          <p className="mt-5 max-w-sm leading-relaxed text-muted-foreground">
+            Hellre prata direkt? Ring{" "}
+            <a
+              href={`tel:${TELEFON.lank}`}
+              className="font-semibold text-foreground underline decoration-line underline-offset-4 transition-colors hover:text-signal"
+            >
+              {TELEFON.visning}
+            </a>{" "}
+            eller skriv till oss på{" "}
+            <a
+              href={FORETAG.instagram}
+              target="_blank"
+              rel="noreferrer"
+              className="font-semibold text-foreground underline decoration-line underline-offset-4 transition-colors hover:text-signal"
+            >
+              Instagram
+            </a>
+            .
+          </p>
+        </Reveal>
+
+        <Reveal delay={120}>
           <form
             onSubmit={onSubmit}
-            className="grid max-w-3xl gap-6 rounded-[2rem] border-2 border-line bg-white p-8 sm:p-10"
+            noValidate
+            className="grid gap-8 rounded-lg bg-card p-7 sm:p-10"
           >
-            <div className="grid gap-6 sm:grid-cols-2">
-              <div>
-                <label htmlFor="namn" className="text-sm font-bold">
-                  Namn
-                </label>
-                <input id="namn" name="namn" required className="field mt-2" />
+            <fieldset aria-describedby={fel.arende ? "arende-fel" : undefined} className="min-w-0">
+              <legend className="text-sm font-medium">Vad gäller det?</legend>
+              <div className="mt-4 grid gap-2 sm:grid-cols-2">
+                {ARENDEN.map((a) => {
+                  const pa = arende === a;
+                  return (
+                    <label
+                      key={a}
+                      className={`relative flex cursor-pointer items-center gap-3 rounded-lg border px-4 py-3 text-sm transition-colors duration-300 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-ring ${
+                        pa
+                          ? "border-primary bg-primary font-medium text-primary-foreground"
+                          : "border-input bg-background hover:border-foreground/60"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="arende"
+                        value={a}
+                        className="sr-only"
+                        checked={pa}
+                        onChange={() => setArende(a)}
+                      />
+                      <span
+                        aria-hidden="true"
+                        className={`flex size-5 shrink-0 items-center justify-center rounded-full border ${
+                          pa ? "border-primary-foreground bg-primary-foreground" : "border-input"
+                        }`}
+                      >
+                        {pa && <Check className="size-3.5 text-primary" strokeWidth={3} />}
+                      </span>
+                      {a}
+                    </label>
+                  );
+                })}
               </div>
-              <div>
-                <label htmlFor="telefon" className="text-sm font-bold">
-                  Telefon
-                </label>
-                <input id="telefon" name="telefon" type="tel" required className="field mt-2" />
-              </div>
-              <div>
-                <label htmlFor="epost" className="text-sm font-bold">
-                  E-post
-                </label>
-                <input id="epost" name="epost" type="email" required className="field mt-2" />
-              </div>
-              <div>
-                <label htmlFor="adress" className="text-sm font-bold">
-                  Adress och ort
-                </label>
-                <input id="adress" name="adress" required className="field mt-2" />
-              </div>
-            </div>
-
-            <fieldset>
-              <legend className="text-sm font-bold">Typ av uppdrag</legend>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {UPPDRAGSTYPER.map((t) => (
-                  <label
-                    key={t}
-                    className={`flex min-h-11 cursor-pointer items-center rounded-full border-2 px-5 py-2 text-sm font-bold transition-colors duration-200 has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-brand-light ${
-                      typer.includes(t)
-                        ? "border-brand bg-brand text-white"
-                        : "border-line hover:border-brand"
-                    }`}
-                  >
-                    <input
-                      type="checkbox"
-                      className="sr-only"
-                      checked={typer.includes(t)}
-                      onChange={() => vaxla(t)}
-                    />
-                    {t}
-                  </label>
-                ))}
-              </div>
+              {fel.arende && (
+                <p id="arende-fel" className="mt-2 text-sm text-destructive">
+                  {fel.arende}
+                </p>
+              )}
             </fieldset>
 
-            <div className="grid gap-6 sm:grid-cols-2">
+            <div className="grid gap-6 sm:grid-cols-[2fr_1fr]">
               <div>
-                <label htmlFor="yta_kvm" className="text-sm font-bold">
-                  Ungefärlig yta (kvm)
+                <label htmlFor="bil" className="text-sm font-medium">
+                  Fordon (märke, modell, årsmodell)
                 </label>
-                <input id="yta_kvm" name="yta_kvm" type="number" min={0} className="field mt-2" />
+                <input id="bil" name="bil" className="field mt-2" />
               </div>
               <div>
-                <label htmlFor="onskat_startdatum" className="text-sm font-bold">
-                  Önskat startdatum
+                <label htmlFor="regnr" className="text-sm font-medium">
+                  Regnr <span className="text-muted-foreground">(om du har)</span>
                 </label>
                 <input
-                  id="onskat_startdatum"
-                  name="onskat_startdatum"
-                  type="date"
-                  className="field mt-2"
+                  id="regnr"
+                  name="regnr"
+                  autoCapitalize="characters"
+                  className="field mt-2 uppercase"
                 />
               </div>
             </div>
 
             <div>
-              <label htmlFor="meddelande" className="text-sm font-bold">
-                Beskriv uppdraget
+              <label htmlFor="beskrivning" className="text-sm font-medium">
+                Beskriv vad du vill ha gjort
               </label>
               <textarea
-                id="meddelande"
-                name="meddelande"
+                id="beskrivning"
+                name="beskrivning"
                 rows={5}
+                aria-invalid={!!fel.beskrivning}
+                aria-describedby={fel.beskrivning ? "beskrivning-fel" : "beskrivning-hjalp"}
                 className="field mt-2"
-                placeholder="Typ av lokal eller fastighet, antal våningar/trapphus, önskad frekvens, särskilda önskemål …"
               />
-            </div>
-
-            <div>
-              <label htmlFor="bilder" className="text-sm font-bold">
-                Ladda upp bilder (valfritt)
-              </label>
-              <input
-                id="bilder"
-                type="file"
-                accept="image/*"
-                multiple
-                onChange={(e) => setFiler(Array.from(e.target.files ?? []))}
-                className="field mt-2 file:mr-4 file:rounded-full file:border-0 file:font-bold file:bg-sun file:text-ink file:px-3 file:py-1.5 file:text-sm"
-              />
-              {filer.length > 0 && (
-                <p className="mt-2 text-xs text-muted-foreground">{filer.length} bild(er) valda</p>
+              {fel.beskrivning ? (
+                <p id="beskrivning-fel" className="mt-2 text-sm text-destructive">
+                  {fel.beskrivning}
+                </p>
+              ) : (
+                <p id="beskrivning-hjalp" className="mt-2 text-sm text-muted-foreground">
+                  Gäller det en A-traktor: berätta om du redan har bilen och om du har önskemål om
+                  stil, till exempel fälgar eller färg.
+                </p>
               )}
             </div>
 
-            <label className="flex items-start gap-3 text-sm text-muted-foreground">
-              <input type="checkbox" required className="mt-0.5 size-5 shrink-0 accent-brand" />
-              <span>
-                Jag samtycker till att {FORETAG.namn} lagrar mina uppgifter för att kunna besvara
-                min förfrågan. Läs mer i{" "}
-                <Link to="/integritetspolicy" className="font-bold text-brand underline">
-                  integritetspolicyn
-                </Link>
-                .
-              </span>
-            </label>
-
-            {fel && (
-              <p role="alert" className="text-sm font-bold text-destructive">
-                {fel}
-              </p>
-            )}
+            <div className="grid gap-6 sm:grid-cols-2">
+              <div>
+                <label htmlFor="namn" className="text-sm font-medium">
+                  Namn
+                </label>
+                <input
+                  id="namn"
+                  name="namn"
+                  autoComplete="name"
+                  aria-invalid={!!fel.namn}
+                  aria-describedby={fel.namn ? "namn-fel" : undefined}
+                  className="field mt-2"
+                />
+                {fel.namn && (
+                  <p id="namn-fel" className="mt-2 text-sm text-destructive">
+                    {fel.namn}
+                  </p>
+                )}
+              </div>
+              <div>
+                <label htmlFor="telefon" className="text-sm font-medium">
+                  Telefon
+                </label>
+                <input
+                  id="telefon"
+                  name="telefon"
+                  type="tel"
+                  autoComplete="tel"
+                  aria-invalid={!!fel.telefon}
+                  aria-describedby={fel.telefon ? "telefon-fel" : undefined}
+                  className="field mt-2"
+                />
+                {fel.telefon && (
+                  <p id="telefon-fel" className="mt-2 text-sm text-destructive">
+                    {fel.telefon}
+                  </p>
+                )}
+              </div>
+            </div>
 
             <div>
-              <button type="submit" disabled={skickar} className="btn-base btn-dark">
-                {skickar ? "Skickar …" : "Skicka förfrågan"}
-              </button>
+              <div className="flex flex-wrap gap-3">
+                <button type="submit" name="satt" value="epost" className="btn-base btn-primary">
+                  Skicka med e-post
+                  <span className="btn-icon">
+                    <ArrowUpRight className="size-4" strokeWidth={1.75} aria-hidden="true" />
+                  </span>
+                </button>
+                <button type="submit" name="satt" value="sms" className="btn-base btn-outline">
+                  Skicka som SMS
+                </button>
+              </div>
+              {skickat && (
+                <p role="status" className="mt-4 text-sm text-muted-foreground">
+                  {skickat === "sms"
+                    ? "Din SMS-app ska ha öppnats med meddelandet."
+                    : "Ditt e-postprogram ska ha öppnats med meddelandet."}{" "}
+                  Hände ingenting? Mejla {FORETAG.epost} eller ring {TELEFON.visning}.
+                </p>
+              )}
             </div>
           </form>
         </Reveal>

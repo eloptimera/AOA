@@ -1,10 +1,11 @@
-# AOA – webbplats
+# AOA Lidköping – webbplats
 
-Webbplats för AOA. Byggd med TanStack Start, React och Tailwind. Kodbasen är kopierad från en befintlig sajt och anpassas för AOA.
+Webbplats för AOA Lidköping AB (ombyggnad till A-traktor + depå). Byggd med TanStack Start, React och Tailwind, med samma designsystem som Önneköps Bilverkstad (mörkt tema, Archivo/Geist) men med LGF-orange som accent.
 
 ```sh
 bun install
 bun run dev
 ```
 
-Företagsuppgifter och tjänster ligger i `src/lib/foretag.ts` och `src/lib/tjanster.ts`.
+Företagsuppgifter ligger i `src/lib/foretag.ts`, byggen/fakta/omdömen i `src/lib/innehall.ts`.
+Offertformuläret skickar inget via sajten – det öppnar ett förifyllt mejl eller SMS.

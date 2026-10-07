@@ -10,15 +10,25 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ATraktorRouteImport } from './routes/a-traktor'
+import { Route as DepaRouteImport } from './routes/depa'
 import { Route as IntegritetspolicyRouteImport } from './routes/integritetspolicy'
 import { Route as KontaktRouteImport } from './routes/kontakt'
 import { Route as OffertRouteImport } from './routes/offert'
-import { Route as OmOssRouteImport } from './routes/om-oss'
-import { Route as TjansterRouteImport } from './routes/tjanster'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ATraktorRoute = ATraktorRouteImport.update({
+  id: '/a-traktor',
+  path: '/a-traktor',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DepaRoute = DepaRouteImport.update({
+  id: '/depa',
+  path: '/depa',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IntegritetspolicyRoute = IntegritetspolicyRouteImport.update({
@@ -36,76 +46,56 @@ const OffertRoute = OffertRouteImport.update({
   path: '/offert',
   getParentRoute: () => rootRouteImport,
 } as any)
-const OmOssRoute = OmOssRouteImport.update({
-  id: '/om-oss',
-  path: '/om-oss',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TjansterRoute = TjansterRouteImport.update({
-  id: '/tjanster',
-  path: '/tjanster',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/a-traktor': typeof ATraktorRoute
+  '/depa': typeof DepaRoute
   '/integritetspolicy': typeof IntegritetspolicyRoute
   '/kontakt': typeof KontaktRoute
   '/offert': typeof OffertRoute
-  '/om-oss': typeof OmOssRoute
-  '/tjanster': typeof TjansterRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/a-traktor': typeof ATraktorRoute
+  '/depa': typeof DepaRoute
   '/integritetspolicy': typeof IntegritetspolicyRoute
   '/kontakt': typeof KontaktRoute
   '/offert': typeof OffertRoute
-  '/om-oss': typeof OmOssRoute
-  '/tjanster': typeof TjansterRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/a-traktor': typeof ATraktorRoute
+  '/depa': typeof DepaRoute
   '/integritetspolicy': typeof IntegritetspolicyRoute
   '/kontakt': typeof KontaktRoute
   '/offert': typeof OffertRoute
-  '/om-oss': typeof OmOssRoute
-  '/tjanster': typeof TjansterRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
-    | '/integritetspolicy'
-    | '/kontakt'
-    | '/offert'
-    | '/om-oss'
-    | '/tjanster'
+    '/' | '/a-traktor' | '/depa' | '/integritetspolicy' | '/kontakt' | '/offert'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
-    | '/integritetspolicy'
-    | '/kontakt'
-    | '/offert'
-    | '/om-oss'
-    | '/tjanster'
+    '/' | '/a-traktor' | '/depa' | '/integritetspolicy' | '/kontakt' | '/offert'
   id:
     | '__root__'
     | '/'
+    | '/a-traktor'
+    | '/depa'
     | '/integritetspolicy'
     | '/kontakt'
     | '/offert'
-    | '/om-oss'
-    | '/tjanster'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ATraktorRoute: typeof ATraktorRoute
+  DepaRoute: typeof DepaRoute
   IntegritetspolicyRoute: typeof IntegritetspolicyRoute
   KontaktRoute: typeof KontaktRoute
   OffertRoute: typeof OffertRoute
-  OmOssRoute: typeof OmOssRoute
-  TjansterRoute: typeof TjansterRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -115,6 +105,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/a-traktor': {
+      id: '/a-traktor'
+      path: '/a-traktor'
+      fullPath: '/a-traktor'
+      preLoaderRoute: typeof ATraktorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/depa': {
+      id: '/depa'
+      path: '/depa'
+      fullPath: '/depa'
+      preLoaderRoute: typeof DepaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/integritetspolicy': {
@@ -138,30 +142,16 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OffertRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/om-oss': {
-      id: '/om-oss'
-      path: '/om-oss'
-      fullPath: '/om-oss'
-      preLoaderRoute: typeof OmOssRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/tjanster': {
-      id: '/tjanster'
-      path: '/tjanster'
-      fullPath: '/tjanster'
-      preLoaderRoute: typeof TjansterRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ATraktorRoute: ATraktorRoute,
+  DepaRoute: DepaRoute,
   IntegritetspolicyRoute: IntegritetspolicyRoute,
   KontaktRoute: KontaktRoute,
   OffertRoute: OffertRoute,
-  OmOssRoute: OmOssRoute,
-  TjansterRoute: TjansterRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

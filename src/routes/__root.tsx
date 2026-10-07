@@ -6,27 +6,32 @@ import {
   useRouter,
   HeadContent,
   Scripts,
+  type ErrorComponentProps,
 } from "@tanstack/react-router";
+import { ArrowUpRight } from "lucide-react";
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { KornFilter } from "@/components/Brand";
+import { FORETAG, TELEFON } from "@/lib/foretag";
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-8xl text-brand">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Sidan finns inte</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Sidan du letar efter finns inte eller har flyttats.
+    <div className="flex min-h-dvh items-center justify-center bg-background px-4">
+      <div className="max-w-md">
+        <p className="eyebrow">Felkod 404</p>
+        <h1 className="display-xl mt-4 text-6xl">Sidan finns inte</h1>
+        <p className="mt-5 text-muted-foreground">
+          Länken är fel eller sidan har flyttats. Gå tillbaka till startsidan så hittar du rätt.
         </p>
-        <div className="mt-6">
-          <Link to="/" className="btn-base btn-dark">
+        <div className="mt-8">
+          <Link to="/" className="btn-base btn-primary">
             Till startsidan
+            <span className="btn-icon">
+              <ArrowUpRight className="size-4" strokeWidth={1.75} aria-hidden="true" />
+            </span>
           </Link>
         </div>
       </div>
@@ -34,7 +39,7 @@ function NotFoundComponent() {
   );
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+function ErrorComponent({ error, reset }: ErrorComponentProps) {
   console.error(error);
   const router = useRouter();
   useEffect(() => {
@@ -42,21 +47,20 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   }, [error]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          Sidan kunde inte laddas
-        </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Något gick fel hos oss. Prova att ladda om sidan eller gå till startsidan.
+    <div className="flex min-h-dvh items-center justify-center bg-background px-4">
+      <div className="max-w-md">
+        <h1 className="display-xl text-4xl">Sidan kunde inte laddas</h1>
+        <p className="mt-5 text-muted-foreground">
+          Något gick fel hos oss. Försök igen, eller ring {TELEFON.visning} om det gäller något
+          brådskande.
         </p>
-        <div className="mt-6 flex flex-wrap justify-center gap-2">
+        <div className="mt-8 flex flex-wrap gap-3">
           <button
             onClick={() => {
               router.invalidate();
               reset();
             }}
-            className="btn-base btn-dark"
+            className="btn-base btn-primary pr-6"
           >
             Försök igen
           </button>
@@ -74,43 +78,46 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "AOA – Städfirma i Göteborg" },
+      { title: "AOA Lidköping | Vi bygger din A-traktor" },
       {
         name: "description",
         content:
-          "Professionell lokalvård för företag, kontor och fastigheter i Göteborg. Få fri offert.",
+          "AOA Lidköping bygger om personbilar till A-traktorer med fokus på kvalitet, säkerhet och stil. Depå för service, reparation, försäljning och rekond. Kunder från hela Sverige.",
       },
-      { property: "og:site_name", content: "AOA" },
-      { name: "theme-color", content: "#ebeae6" },
+      { name: "theme-color", content: "#14161f" },
+      { property: "og:site_name", content: FORETAG.kortnamn },
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "sv_SE" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
-      { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
-      { rel: "icon", href: "/favicon-32.png", type: "image/png", sizes: "32x32" },
-      { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
+      { rel: "stylesheet", href: appCss },
+      { rel: "icon", href: "/favicon.ico?v=1", sizes: "any" },
+      { rel: "icon", href: "/favicon-32.png?v=1", type: "image/png", sizes: "32x32" },
+      { rel: "icon", href: "/icon-192.png?v=1", type: "image/png", sizes: "192x192" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png?v=1" },
     ],
     scripts: [
       {
         type: "application/ld+json",
         children: JSON.stringify({
           "@context": "https://schema.org",
-          "@type": "HomeAndConstructionBusiness",
-          additionalType: "https://schema.org/CleaningService",
-          name: "AOA",
+          "@type": "AutoRepair",
+          name: FORETAG.namn,
           description:
-            "Lokalvårdsbolag i Göteborg. Kontorsstädning, fastighetsstädning och lokalvård för företag, fastighetsägare och organisationer.",
+            "Ombyggnad av personbilar till A-traktorer samt service, reparation, försäljning och rekond av fordon i Lidköping.",
+          telephone: TELEFON.lank,
+          email: FORETAG.epost,
           address: {
             "@type": "PostalAddress",
-            addressLocality: "Göteborg",
+            streetAddress: FORETAG.gata,
+            postalCode: FORETAG.postnummer,
+            addressLocality: FORETAG.ort,
             addressCountry: "SE",
           },
-          areaServed: ["Göteborg"],
+          areaServed: "SE",
+          foundingDate: "2025-12-18",
+          sameAs: [FORETAG.instagram],
         }),
       },
     ],
@@ -140,8 +147,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <KornFilter />
-      <div className="flex min-h-screen flex-col">
+      <div className="flex min-h-dvh flex-col">
         <Header />
         <main id="innehall" className="flex-1 overflow-x-clip">
           {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
